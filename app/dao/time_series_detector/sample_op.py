@@ -30,7 +30,7 @@ class SampleOperation(object):
 
     def import_sample(self, data):
         params = []
-        insert_str = "INSERT INTO sample_dataset(view_id, view_name, attr_name, attr_id, source, train_or_test, positive_or_negative, window, data_time, data_c, data_b, data_a, anomaly_id) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+        insert_str = "INSERT INTO sample_dataset(view_id, view_name, attr_name, attr_id, source, train_or_test, positive_or_negative, `window`, data_time, data_c, data_b, data_a, anomaly_id) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
         for row in data:
             params.append([row['viewId'], row['viewName'], row['attrName'], row['attrId'], row['source'], row['trainOrTest'], row['positiveOrNegative'], row['window'], row['dataTime'], row['dataC'], row['dataB'], row['dataA'], row['anomalyId']])
         num = self.__cur.executemany(insert_str, params)
@@ -108,7 +108,7 @@ class SampleOperation(object):
                 source_str += 'source = %s or '
             query_str += ' and (' + source_str[:-4] + ') '
 
-        command = 'SELECT data_c, data_b, data_a, positive_or_negative FROM sample_dataset WHERE window = %s and data_time > %s and data_time < %s ' + query_str
+        command = 'SELECT data_c, data_b, data_a, positive_or_negative FROM sample_dataset WHERE `window` = %s and data_time > %s and data_time < %s ' + query_str
         length = self.__cur.execute(command, params)
         sample_list = []
         query_res = self.__cur.fetchmany(length)
@@ -142,7 +142,7 @@ class SampleOperation(object):
                 source_str += 'source = %s or '
             query_str += " and (" + source_str[:-4] + ") "
 
-        command = 'SELECT count(*), count(if(positive_or_negative = "positive", 1, NULL)), count(if(positive_or_negative = "negative", 1, NULL))  FROM sample_dataset WHERE  window = %s and data_time > %s and data_time < %s ' + query_str
+        command = 'SELECT count(*), count(if(positive_or_negative = "positive", 1, NULL)), count(if(positive_or_negative = "negative", 1, NULL))  FROM sample_dataset WHERE  `window` = %s and data_time > %s and data_time < %s ' + query_str
         length = self.__cur.execute(command, params)
 
         sample_list = []
@@ -160,7 +160,7 @@ class SampleOperation(object):
         sample_list = []
         id_list = data.split(',')
         format_strings = ','.join(['%s'] * len(id_list))
-        command = 'SELECT view_name, view_id, attr_name, attr_id, source, train_or_test, positive_or_negative, window, data_c, data_b, data_a, data_time FROM sample_dataset WHERE id in (%s) ' % format_strings
+        command = 'SELECT view_name, view_id, attr_name, attr_id, source, train_or_test, positive_or_negative, `window`, data_c, data_b, data_a, data_time FROM sample_dataset WHERE id in (%s) ' % format_strings
         length = self.__cur.execute(command, id_list)
         query_res = self.__cur.fetchmany(length)
         for row in query_res:
@@ -225,7 +225,7 @@ class SampleOperation(object):
 
         params.append(beg_limit)
         params.append(limit)
-        command = 'SELECT id, view_id, view_name, attr_id, attr_name, data_time, data_c, data_b, data_a, positive_or_negative, source, train_or_test, window FROM sample_dataset  ' + query_str + ' LIMIT %s, %s;'
+        command = 'SELECT id, view_id, view_name, attr_id, attr_name, data_time, data_c, data_b, data_a, positive_or_negative, source, train_or_test, `window` FROM sample_dataset  ' + query_str + ' LIMIT %s, %s;'
         command_count = 'SELECT count(*) FROM sample_dataset  ' + query_str
         length = self.__cur.execute(command, params)
 

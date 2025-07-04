@@ -54,7 +54,7 @@ class TrainOperation(object):
 
         params.append(beg_limit)
         params.append(limit)
-        command = 'SELECT task_id, sample_num, postive_sample_num, negative_sample_num, window, model_name, source, UNIX_TIMESTAMP(start_time), UNIX_TIMESTAMP(end_time), status FROM train_task where 1 = 1 ' + query_str + ' order by start_time desc LIMIT %s,%s;'
+        command = 'SELECT task_id, sample_num, postive_sample_num, negative_sample_num, `window`, model_name, source, UNIX_TIMESTAMP(start_time), UNIX_TIMESTAMP(end_time), status FROM train_task where 1 = 1 ' + query_str + ' order by start_time desc LIMIT %s,%s;'
         command_count = 'SELECT count(*) FROM train_task where 1 = 1' + query_str
         length = self.__cur.execute(command, params)
         task_list = []
@@ -96,7 +96,7 @@ class TrainOperation(object):
         }
 
     def insert_train_info(self, data):
-        command = "insert into train_task(task_id, sample_num, postive_sample_num, negative_sample_num, window, model_name, source, start_time, end_time, status) values(%s, %s, %s, %s, %s, %s, %s, from_unixtime(%s), from_unixtime(%s), %s)"
+        command = "insert into train_task(task_id, sample_num, postive_sample_num, negative_sample_num, `window`, model_name, source, start_time, end_time, status) values(%s, %s, %s, %s, %s, %s, %s, from_unixtime(%s), from_unixtime(%s), %s)"
 
         num = self.__cur.execute(command, [data['task_id'], data['sample_num'], data['postive_sample_num'], data['negative_sample_num'], DEFAULT_WINDOW, "", ','.join(data['source']), data['begin_time'], data['end_time'], data['status']])
         self.__conn.commit()

@@ -9,6 +9,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 """
 
 import os
+import numpy as np
 import xgboost as xgb
 from time_series_detector.feature import feature_service
 from time_series_detector.common.tsd_errorcode import *

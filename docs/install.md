@@ -48,8 +48,10 @@ systemctl start mariadb
 1、创建需要的数据库用户名并授权，连接MySQL客户端并执行
 
 ```
-   grant all privileges on metis.* to metis@127.0.0.1  identified by 'metis@123';
-   flush privileges;
+-- grant all privileges on metis.* to metis@127.0.0.1  identified by 'metis@123';
+CREATE USER 'metis'@'%' IDENTIFIED BY 'metis@123';
+GRANT ALL PRIVILEGES ON metis.* TO 'metis'@'%';
+flush privileges;
 ```
    
 2、创建数据库 `metis`，在命令行下执行
